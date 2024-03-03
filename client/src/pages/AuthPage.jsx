@@ -37,7 +37,7 @@ const AuthPage = ({ page }) => {
     }
 
     const res = await axios
-      .post("http://localhost:5000/api/auth/login", { email, password })
+      .post("https://khata.onrender.com/api/auth/login", { email, password })
       .then((data) => {
         console.log(data);
         if (data.status === 200) {
@@ -57,7 +57,7 @@ const AuthPage = ({ page }) => {
       console.log(password);
       console.log(confirmPassword);
       const res = await axios
-        .post("http://localhost:5000/api/auth/signup", {
+        .post("https://khata.onrender.com/api/auth/signup", {
           fname: name,
           email,
           password,
