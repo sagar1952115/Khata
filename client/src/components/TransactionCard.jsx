@@ -16,7 +16,7 @@ const TransactionCard = ({ paymentData }) => {
         <div className="text-3xl py-2">{amount}</div>
         <div className="flex justify-between text-sm">
           <div>{date}</div>
-          {payment === "inbound" && <div className="italic">{mode}</div>}
+          {/* {payment === "inbound" && <div className="italic">{mode}</div>} */}
         </div>
       </div>
     </div>

@@ -1,14 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
-const AmountInputModal = ({ buttonType, onclick, handleModalClick }) => {
+const AmountInputModal = ({
+  buttonType,
+  paymentData,
+  setPaymentData,
+  onclick,
+  handleModalClick,
+}) => {
+  const [amount, setAmount] = useState("");
+  const [desc, setDesc] = useState("");
+
+  const handleTake = () => {
+    const newObj = {
+      amount: Number(amount),
+      mode: "online",
+      payment: "inbound",
+      date: new Date().toLocaleDateString(),
+    };
+
+    setPaymentData([...paymentData, newObj]);
+    handleModalClick(false);
+  };
+  const handleGive = () => {
+    const newObj = {
+      amount: Number(amount),
+      mode: "offline",
+      payment: "outbound",
+      date: new Date().toLocaleString(),
+    };
+
+    setPaymentData([...paymentData, newObj]);
+    handleModalClick(false);
+  };
+
+  const handleButtonClick = (event) => {
+    if (amount === "") {
+      return toast.error("Amount can not be empty");
+    }
+    if (buttonType === "Take") {
+      handleTake();
+    } else {
+      handleGive();
+    }
+  };
   return (
     <>
-      {" "}
-      <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+      <ToastContainer />
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
         lorem
       </div>
-      <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-        {/* <div class="bg-white flex flex-col items-center justify-center w-2/3 p-6 rounded-lg shadow-lg">
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+        {/* <div classname="bg-white flex flex-col items-center justify-center w-2/3 p-6 rounded-lg shadow-lg">
           <input type="number" className="appearance-none" />
           <input type="text" />
           <button>Add</button>
@@ -22,20 +65,25 @@ const AmountInputModal = ({ buttonType, onclick, handleModalClick }) => {
           >
             X
           </button>
-          <h2 class="text-2xl font-bold mb-4">Add Data</h2>
+          <h2 className="text-2xl font-bold mb-4">Add Data</h2>
           <input
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
             type="number"
             placeholder="Rs. 0"
             // style="-moz-appearance: textfield;"
             className="w-full outline-none  remove-arrow py-2 font-extrabold text-4xl text-center px-3 text-gray-700 border-b mb-8"
           />
           <input
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
             type="text"
             placeholder="Description"
             className="w-full  py-2 px-3 text-gray-700 border-b rounded mb-8"
           />
           <button
-            class={` ${
+            onClick={handleButtonClick}
+            className={` ${
               buttonType === "Take"
                 ? "bg-green-500 hover:bg-green-700"
                 : "bg-red-500 hover:bg-red-700"

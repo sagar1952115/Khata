@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { paymentData } from "../data";
+import { paymentData as data } from "../data";
 import TransactionCard from "../components/TransactionCard";
 import AmountInputModal from "../components/AmountInputModal";
+import UserNavbar from "../components/UserNavbar";
 
 const UserPage = () => {
+  const [paymentData, setPaymentData] = useState(data);
   const [openModal, setOpenModal] = useState(false);
   const [buttonType, setButtonType] = useState("");
   const [totalAmountPending, setTotalAmountPending] = useState(0);
   const calculateTotalAmountPending = () => {
-    console.log(paymentData.totalAmountPending);
+    // console.log(paymentData.totalAmountPending);
     let totalAmountPending = 0;
     let totalInboundAmount = 0;
     let totalOutboundAmount = 0;
@@ -20,27 +22,20 @@ const UserPage = () => {
         totalOutboundAmount += paymentData[i].amount;
       }
     }
+    console.log(paymentData);
+    console.log(totalOutboundAmount, totalInboundAmount);
     return totalOutboundAmount - totalInboundAmount;
   };
+  let name = "Sagar";
   useEffect(() => {
     const amount = calculateTotalAmountPending();
     console.log(amount);
     setTotalAmountPending(amount);
-  }, []);
+  }, [paymentData]);
   return (
     <div>
       <Navbar />
-      {totalAmountPending > 0 ? (
-        <div className="left-0  text-2xl font-extrabold right-0 bg-indigo-500 text-white rounded-md m-2 flex justify-between p-8 items-center">
-          <div>You will get</div>
-          <div>{totalAmountPending}</div>
-        </div>
-      ) : (
-        <div className="left-0 text-2xl font-extrabold right-0 bg-indigo-500 text-white rounded-md m-2 flex justify-between p-8 items-center">
-          <div>You will give</div>
-          <div>{-1 * totalAmountPending}</div>
-        </div>
-      )}
+      <UserNavbar name={name} amount={totalAmountPending} />
 
       <div className="mb-20 m-2 h-[700px]  overflow-auto">
         {paymentData.map((paymentData, i) => {
@@ -70,6 +65,8 @@ const UserPage = () => {
       </div>
       {openModal && (
         <AmountInputModal
+          paymentData={paymentData}
+          setPaymentData={setPaymentData}
           buttonType={buttonType}
           handleModalClick={setOpenModal}
         />
