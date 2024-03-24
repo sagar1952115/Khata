@@ -1,14 +1,14 @@
 import "./App.css";
 import AuthPage from "./pages/AuthPage";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import { ToastContainer } from "react-toastify";
 
 const ProtectedRoute = ({ element, ...rest }) => {
   // const { isLoggedIn } = useAuth();
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   return isLoggedIn ? (
     element
